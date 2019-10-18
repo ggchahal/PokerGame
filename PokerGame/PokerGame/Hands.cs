@@ -4,10 +4,10 @@ using static PokerGame.HandRankingCategory;
 
 namespace PokerGame
 {
-    public class Hands
+    public static class Hands
     {
         #region Public methods
-        public bool ReadHands(string pokerHand, Card[] hand1, Card[] hand2)
+        public static bool ReadHands(string pokerHand, Card[] hand1, Card[] hand2)
         {
             string[] linePieces;
 
@@ -37,7 +37,7 @@ namespace PokerGame
             return true;
         }
 
-        public bool EvaluateWinningHand(Card[] hand1, Card[] hand2, out string firstHand, out string secondHand, out string winner)
+        public static bool EvaluateWinningHand(Card[] hand1, Card[] hand2, out string firstHand, out string secondHand, out string winner)
         {
             bool isFirstHand = false;
             bool isSecondHand = false;
@@ -525,30 +525,10 @@ namespace PokerGame
 
             return false;
         }
+        
         #endregion
 
         #region Private methods
-        public static bool IsValid(string input, int min = 1, int max = 10)
-        {
-            if (string.IsNullOrEmpty(input))
-            {
-                return false;
-            }
-
-            var i = 0;
-
-            if (int.TryParse(input, out i))
-            {
-                return IsInRange(i, min, max);
-            }
-
-            return false;
-        }
-
-        private static bool IsInRange(int i, int min, int max)
-        {
-            return ((i >= min) && (i <= max));
-        }
 
         private static string DecideWinnerIfTie(Card[] hand1, Card[] hand2)
         {

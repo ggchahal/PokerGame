@@ -1,7 +1,7 @@
 ﻿
 namespace PokerGame
 {
-    public class HandsRanking
+    public static class HandsRanking
     {
         public static int IsFiveOfAKind(Card[] h)
         {
