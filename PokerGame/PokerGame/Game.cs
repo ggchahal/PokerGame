@@ -45,14 +45,17 @@ namespace PokerGame
             {
                 var inputValue = Console.ReadLine();
 
-                if (!Regex.IsMatch(inputValue, pattern))
+                if (!string.IsNullOrEmpty(inputValue))
                 {
-                    Console.WriteLine("Invalid value format. Please enter the value again");
-                    i--;
-                }
-                else
-                {
-                    pokerHands.Add(inputValue);
+                    if (!Regex.IsMatch(inputValue, pattern))
+                    {
+                        Console.WriteLine("Invalid value format. Please enter the value again");
+                        i--;
+                    }
+                    else
+                    {
+                        pokerHands.Add(inputValue);
+                    }
                 }
             }
         }

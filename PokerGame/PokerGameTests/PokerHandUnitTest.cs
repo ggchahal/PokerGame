@@ -75,6 +75,60 @@ namespace PokerGameTests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void VerifyInputHands_IncorrectFormat()
+        {
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+
+                using (var sr = new StringReader("AAEWR 44465"))
+                {
+                    Console.SetIn(sr);
+
+                    //Arrange
+                    string noOfPairs = "1";
+
+                    //Act
+                    Game.VerifyInputHands(noOfPairs, null);
+
+                    //Expected Value
+                    string expected =
+                       string.Format("Invalid value format. Please enter the value again{0}", Environment.NewLine);
+
+                    //Assert
+                    Assert.AreEqual(expected, sw.ToString());
+                }
+            }
+        }
+
+        [TestMethod]
+        public void VerifyInputHands_CorrectFormat()
+        {
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+
+                using (var sr = new StringReader("AAJJ2 35628"))
+                {
+                    Console.SetIn(sr);
+
+                    //Arrange
+                    string noOfPairs = "1";
+                    List<string> pokerhands = new List<string>();
+
+                    //Act
+                    Game.VerifyInputHands(noOfPairs, pokerhands);
+
+                    //Expected Value
+                    List<string> expected = new List<string>(){ "AAJJ2 35628" };
+
+                    //Assert
+                    CollectionAssert.AreEqual(expected, pokerhands);
+                }
+            }
+        }
+
         #endregion
 
         #region Ouput Test
