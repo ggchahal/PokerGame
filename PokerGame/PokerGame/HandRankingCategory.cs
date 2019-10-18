@@ -14,5 +14,12 @@ namespace PokerGame
             FOUROFAKIND = 6,
             FIVEOFAKIND = 7
         }
+
+        public class Player
+        {
+           public const string PlayerA = "a";
+           public const string PlayerB = "b";
+           public const string BothPlayer = "ab";
+        }
     }
 }

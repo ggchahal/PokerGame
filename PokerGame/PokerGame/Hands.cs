@@ -5,12 +5,13 @@ using static PokerGame.HandRankingCategory;
 namespace PokerGame
 {
     public class Hands
-    {      
+    {
+        #region Public methods
         public bool ReadHands(string pokerHand, Card[] hand1, Card[] hand2)
         {
             string[] linePieces;
 
-            if (pokerHand == null) return false;
+            if (string.IsNullOrEmpty(pokerHand)) return false;
 
             linePieces = pokerHand.Split();
 
@@ -171,11 +172,8 @@ namespace PokerGame
             {
                 if (HandsRanking.IsFullHouse(hand1, 2) != -1 && HandsRanking.IsFullHouse(hand2, 2) != -1 && HandsRanking.IsFullHouse(hand1, 2) == HandsRanking.IsFullHouse(hand2, 2))
                 {
-                    firstHand = Convert.ToString(HandCategory.FULLHOUSE);
-                    isFirstHand = true;
-                    secondHand = Convert.ToString(HandCategory.FULLHOUSE);
-                    isSecondHand = true;
-                    winner = "ab";
+                    SetHandCategoryForPlayers(out firstHand, out secondHand, Convert.ToString(HandCategory.FULLHOUSE));
+                    winner = Player.BothPlayer;
                     return true;
                 }
             }
@@ -213,11 +211,8 @@ namespace PokerGame
             {
                 if (HandsRanking.IsStraight(hand1) != -1 && HandsRanking.IsStraight(hand2) != -1 && HandsRanking.IsStraight(hand1) == HandsRanking.IsStraight(hand2))
                 {
-                    firstHand = Convert.ToString(HandCategory.STRAIGHT);
-                    isFirstHand = true;
-                    secondHand = Convert.ToString(HandCategory.STRAIGHT);
-                    isSecondHand = true;
-                    winner = "ab";
+                    SetHandCategoryForPlayers(out firstHand, out secondHand, Convert.ToString(HandCategory.STRAIGHT));
+                    winner = Player.BothPlayer;
                     return true;
                 }
             }
@@ -255,48 +250,8 @@ namespace PokerGame
             {
                 if (HandsRanking.IsThreeOfAKind(hand1) != -1 && HandsRanking.IsThreeOfAKind(hand2) != -1 && HandsRanking.IsThreeOfAKind(hand1) == HandsRanking.IsThreeOfAKind(hand2))
                 {
-                    firstHand = Convert.ToString(HandCategory.THREEOFAKIND);
-                    isFirstHand = true;
-                    secondHand = Convert.ToString(HandCategory.THREEOFAKIND);
-                    isSecondHand = true;
-
-                    if (HandsRanking.IsHighCard(hand1, 0) == HandsRanking.IsHighCard(hand2, 0))
-                    {
-                        if (HandsRanking.IsHighCard(hand1, 1) == HandsRanking.IsHighCard(hand2, 1))
-                        {
-                            if (HandsRanking.IsHighCard(hand1, 2) == HandsRanking.IsHighCard(hand2, 2))
-                            {
-                                if (HandsRanking.IsHighCard(hand1, 3) == HandsRanking.IsHighCard(hand2, 3))
-                                {
-                                    if (HandsRanking.IsHighCard(hand1, 4) == HandsRanking.IsHighCard(hand2, 4))
-                                    {
-                                        winner = "ab";
-                                    }
-                                    else
-                                    {
-                                        winner = HandsRanking.IsHighCard(hand1, 4) > HandsRanking.IsHighCard(hand2, 4) ? "a" : "b";
-                                    }
-                                }
-                                else
-                                {
-                                    winner = HandsRanking.IsHighCard(hand1, 3) > HandsRanking.IsHighCard(hand2, 3) ? "a" : "b";
-                                }
-                            }
-                            else
-                            {
-                                winner = HandsRanking.IsHighCard(hand1, 2) > HandsRanking.IsHighCard(hand2, 2) ? "a" : "b";
-                            }
-                        }
-                        else
-                        {
-                            winner = HandsRanking.IsHighCard(hand1, 1) > HandsRanking.IsHighCard(hand2, 1) ? "a" : "b";
-                        }
-                    }
-                    else
-                    {
-                        winner = HandsRanking.IsHighCard(hand1, 0) > HandsRanking.IsHighCard(hand2, 0) ? "a" : "b";
-                    }
-
+                    SetHandCategoryForPlayers(out firstHand, out secondHand, Convert.ToString(HandCategory.THREEOFAKIND));
+                    winner = DecideWinnerIfTie(hand1, hand2);
                     return true;
                 }
             }
@@ -364,48 +319,8 @@ namespace PokerGame
             {
                 if (HandsRanking.IsTwoPairs(hand1, 2) != -1 && HandsRanking.IsTwoPairs(hand2, 2) != -1 && HandsRanking.IsTwoPairs(hand1, 2) == HandsRanking.IsTwoPairs(hand2, 2))
                 {
-                    firstHand = Convert.ToString(HandCategory.TWOPAIR);
-                    isFirstHand = true;
-                    secondHand = Convert.ToString(HandCategory.TWOPAIR);
-                    isSecondHand = true;
-
-                    if (HandsRanking.IsHighCard(hand1, 0) == HandsRanking.IsHighCard(hand2, 0))
-                    {
-                        if (HandsRanking.IsHighCard(hand1, 1) == HandsRanking.IsHighCard(hand2, 1))
-                        {
-                            if (HandsRanking.IsHighCard(hand1, 2) == HandsRanking.IsHighCard(hand2, 2))
-                            {
-                                if (HandsRanking.IsHighCard(hand1, 3) == HandsRanking.IsHighCard(hand2, 3))
-                                {
-                                    if (HandsRanking.IsHighCard(hand1, 4) == HandsRanking.IsHighCard(hand2, 4))
-                                    {
-                                        winner = "ab";
-                                    }
-                                    else
-                                    {
-                                        winner = HandsRanking.IsHighCard(hand1, 4) > HandsRanking.IsHighCard(hand2, 4) ? "a" : "b";
-                                    }
-                                }
-                                else
-                                {
-                                    winner = HandsRanking.IsHighCard(hand1, 3) > HandsRanking.IsHighCard(hand2, 3) ? "a" : "b";
-                                }
-                            }
-                            else
-                            {
-                                winner = HandsRanking.IsHighCard(hand1, 2) > HandsRanking.IsHighCard(hand2, 2) ? "a" : "b";
-                            }
-                        }
-                        else
-                        {
-                            winner = HandsRanking.IsHighCard(hand1, 1) > HandsRanking.IsHighCard(hand2, 1) ? "a" : "b";
-                        }
-                    }
-                    else
-                    {
-                        winner = HandsRanking.IsHighCard(hand1, 0) > HandsRanking.IsHighCard(hand2, 0) ? "a" : "b";
-                    }
-
+                    SetHandCategoryForPlayers(out firstHand, out secondHand, Convert.ToString(HandCategory.TWOPAIR));
+                    winner = DecideWinnerIfTie(hand1, hand2);
                     return true;
                 }
             }
@@ -443,48 +358,8 @@ namespace PokerGame
             {
                 if (HandsRanking.IsOnePair(hand1) != -1 && HandsRanking.IsOnePair(hand2) != -1 && HandsRanking.IsOnePair(hand1) == HandsRanking.IsOnePair(hand2))
                 {
-                    firstHand = Convert.ToString(HandCategory.PAIR);
-                    isFirstHand = true;
-                    secondHand = Convert.ToString(HandCategory.PAIR);
-                    isSecondHand = true;
-
-                    if (HandsRanking.IsHighCard(hand1, 0) == HandsRanking.IsHighCard(hand2, 0))
-                    {
-                        if (HandsRanking.IsHighCard(hand1, 1) == HandsRanking.IsHighCard(hand2, 1))
-                        {
-                            if (HandsRanking.IsHighCard(hand1, 2) == HandsRanking.IsHighCard(hand2, 2))
-                            {
-                                if (HandsRanking.IsHighCard(hand1, 3) == HandsRanking.IsHighCard(hand2, 3))
-                                {
-                                    if (HandsRanking.IsHighCard(hand1, 4) == HandsRanking.IsHighCard(hand2, 4))
-                                    {
-                                        winner = "ab";
-                                    }
-                                    else
-                                    {
-                                        winner = HandsRanking.IsHighCard(hand1, 4) > HandsRanking.IsHighCard(hand2, 4) ? "a" : "b";
-                                    }
-                                }
-                                else
-                                {
-                                    winner = HandsRanking.IsHighCard(hand1, 3) > HandsRanking.IsHighCard(hand2, 3) ? "a" : "b";
-                                }
-                            }
-                            else
-                            {
-                                winner = HandsRanking.IsHighCard(hand1, 2) > HandsRanking.IsHighCard(hand2, 2) ? "a" : "b";
-                            }
-                        }
-                        else
-                        {
-                            winner = HandsRanking.IsHighCard(hand1, 1) > HandsRanking.IsHighCard(hand2, 1) ? "a" : "b";
-                        }
-                    }
-                    else
-                    {
-                        winner = HandsRanking.IsHighCard(hand1, 0) > HandsRanking.IsHighCard(hand2, 0) ? "a" : "b";
-                    }
-
+                    SetHandCategoryForPlayers(out firstHand, out secondHand, Convert.ToString(HandCategory.PAIR));
+                    winner = DecideWinnerIfTie(hand1, hand2);
                     return true;
                 }
             }
@@ -642,24 +517,17 @@ namespace PokerGame
             {
                 if (HandsRanking.IsHighCard(hand1, 4) != -1 && HandsRanking.IsHighCard(hand2, 4) != -1 && HandsRanking.IsHighCard(hand1, 4) == HandsRanking.IsHighCard(hand2, 4))
                 {
-                    firstHand = Convert.ToString(HandCategory.HIGHCARD);
-                    isFirstHand = true;
-                    secondHand = Convert.ToString(HandCategory.HIGHCARD);
-                    isSecondHand = true;
-                    winner = "ab";
+                    SetHandCategoryForPlayers(out firstHand, out secondHand, Convert.ToString(HandCategory.HIGHCARD));
+                    winner = Player.BothPlayer;
                     return true;
                 }
             }
 
             return false;
         }
+        #endregion
 
-        private static bool WinnerName(out string winner, int a, int b, int firstHandCategory, int secondHandCategory)
-        {
-            winner = firstHandCategory == secondHandCategory ? a > b ? "a" : "b" : firstHandCategory > secondHandCategory ? "a" : "b";
-            return true;
-        }
-
+        #region Private methods
         public static bool IsValid(string input, int min = 1, int max = 10)
         {
             if (string.IsNullOrEmpty(input))
@@ -681,5 +549,61 @@ namespace PokerGame
         {
             return ((i >= min) && (i <= max));
         }
+
+        private static string DecideWinnerIfTie(Card[] hand1, Card[] hand2)
+        {
+            string winner;
+            if (HandsRanking.IsHighCard(hand1, 0) == HandsRanking.IsHighCard(hand2, 0))
+            {
+                if (HandsRanking.IsHighCard(hand1, 1) == HandsRanking.IsHighCard(hand2, 1))
+                {
+                    if (HandsRanking.IsHighCard(hand1, 2) == HandsRanking.IsHighCard(hand2, 2))
+                    {
+                        if (HandsRanking.IsHighCard(hand1, 3) == HandsRanking.IsHighCard(hand2, 3))
+                        {
+                            if (HandsRanking.IsHighCard(hand1, 4) == HandsRanking.IsHighCard(hand2, 4))
+                            {
+                                winner = Player.BothPlayer;
+                            }
+                            else
+                            {
+                                winner = HandsRanking.IsHighCard(hand1, 4) > HandsRanking.IsHighCard(hand2, 4) ? Player.PlayerA : Player.PlayerB;
+                            }
+                        }
+                        else
+                        {
+                            winner = HandsRanking.IsHighCard(hand1, 3) > HandsRanking.IsHighCard(hand2, 3) ? Player.PlayerA : Player.PlayerB;
+                        }
+                    }
+                    else
+                    {
+                        winner = HandsRanking.IsHighCard(hand1, 2) > HandsRanking.IsHighCard(hand2, 2) ? Player.PlayerA : Player.PlayerB;
+                    }
+                }
+                else
+                {
+                    winner = HandsRanking.IsHighCard(hand1, 1) > HandsRanking.IsHighCard(hand2, 1) ? Player.PlayerA : Player.PlayerB;
+                }
+            }
+            else
+            {
+                winner = HandsRanking.IsHighCard(hand1, 0) > HandsRanking.IsHighCard(hand2, 0) ? Player.PlayerA : Player.PlayerB;
+            }
+
+            return winner;
+        }
+
+        private static void SetHandCategoryForPlayers(out string firstHand, out string secondHand, string handCategory)
+        {
+            firstHand = handCategory;
+            secondHand = handCategory;
+        }
+
+        private static bool WinnerName(out string winner, int a, int b, int firstHandCategory, int secondHandCategory)
+        {
+            winner = firstHandCategory == secondHandCategory ? a > b ? Player.PlayerA : Player.PlayerB : firstHandCategory > secondHandCategory ? Player.PlayerA : Player.PlayerB;
+            return true;
+        }
+        #endregion
     }
 }

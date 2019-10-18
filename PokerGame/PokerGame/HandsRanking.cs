@@ -74,21 +74,22 @@ namespace PokerGame
 
         public static int IsStraight(Card[] h)
         {
+            string combinedString = string.Empty;
             for (int i = 0; i < 4; i++)
             {
+                combinedString = combinedString + h[i].Value.ToString();
+
+                if (combinedString == "2345" && h[i + 1].Value == 14)
+                {
+                    return h[3].Value;
+                }
+
                 if (h[i].Value != h[i + 1].Value - 1)
                 {
-                    if (i == 3)
-                    {
-                        if (h[i + 1].Value == 14)
-                        {
-                            return h[3].Value;
-                        }
-                    }
-
                     return -1;
                 }
             }
+
             return h[4].Value;
         }
 

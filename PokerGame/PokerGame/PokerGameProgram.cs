@@ -4,23 +4,17 @@ using System.Collections.Generic;
 
 namespace PokerGame
 {
-    class Program
+    public class PokerGameProgram
     {
-        readonly Card[] hand1 = new Card[5];
-        readonly Card[] hand2 = new Card[5];
-
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Program program = new Program();
-            program.DetermineWinnerHand();
+            //PokerGameProgram program = new PokerGameProgram();
+            //program.DetermineWinnerHand();
+            DetermineWinnerHand();
         }
 
-        public void DetermineWinnerHand()
-        {
-            //Hands objHand = new Hands();
-            Game game = new Game();
-            //Stopwatch clock = Stopwatch.StartNew();
-
+        public static void DetermineWinnerHand()
+        {           
             Console.WriteLine("Welcome to Poker Game");
             Console.WriteLine("Given two five - card poker hands dealt from a modified 52 card deck, classify each hand and determine which hand is the winner.\n");
             Console.WriteLine("************************************************INPUT***************************************************************");
@@ -61,26 +55,10 @@ namespace PokerGame
 
             Console.WriteLine("\n***********************************************OUTPUT*************************************************************");
             Console.WriteLine();
-          
-            game.Judge(pokerHands, hand1, hand2);
 
-            //foreach (string pokerHand in pokerHands)
-            //{
-            //    if (objHand.ReadHands(pokerHand, hand1, hand2))
-            //    {
-            //        Array.Sort(hand1);
-            //        Array.Sort(hand2);
+            Game game = new Game();
+            game.Judge(pokerHands);
 
-            //        if (objHand.EvaluateWinningHand(hand1, hand2, out string firstHand, out string secondHand, out string winner))
-            //        {
-            //            Console.WriteLine(firstHand + "  " + secondHand + "  " + winner);
-            //        }
-            //    }
-            //}
-
-            //clock.Stop();
-
-            //Console.WriteLine("Solution took {0} ms", clock.ElapsedMilliseconds);
             Console.ReadKey();
         }
     }
